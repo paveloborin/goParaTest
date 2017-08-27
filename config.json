@@ -1,0 +1,6 @@
+{
+  "phpPath": "php",
+  "phpUnitPath": "/Users/paveloborin/PhpstormProjects/symfony/phpunit-6.3.0.phar",
+  "dir": "./",
+  "processes": 2
+}
