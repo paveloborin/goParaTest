@@ -2,10 +2,9 @@ package main
 
 import (
 	"sync"
-	"log"
-
 	"github.com/paveloborin/goParaTest/helper"
 	"github.com/paveloborin/goParaTest/workers"
+	"github.com/paveloborin/goParaTest/logger"
 )
 
 var results *sync.Map
@@ -26,9 +25,5 @@ func main() {
 
 	wg.Wait()
 
-	log.Println("Results:")
-	results.Range(func(key interface{}, value interface{}) bool {
-		log.Printf("%v %v", key, value)
-		return true
-	})
+	logger.PrintResult(results)
 }
