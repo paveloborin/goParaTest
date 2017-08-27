@@ -1,11 +1,11 @@
-package main
+package helper
 
 import (
 	"io/ioutil"
 	"strings"
 )
 
-func dirParse(dirName string) []string {
+func DirParse(dirName string) []string {
 	filesAr := []string{}
 	files, _ := ioutil.ReadDir(dirName)
 	for _, f := range files {
