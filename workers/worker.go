@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func Worker(wg *sync.WaitGroup, testName, phpPath, phpUnitPath string, results *sync.Map) {
+func Run(wg *sync.WaitGroup, testName, phpPath, phpUnitPath string, results *sync.Map) {
 	defer wg.Done()
 
 	tokenIndex := helper.GetFreeToken()

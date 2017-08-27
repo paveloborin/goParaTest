@@ -20,7 +20,7 @@ func main() {
 
 	wg.Add(len(testNames))
 	for _, testName := range testNames {
-		go workers.Worker(&wg, testName, phpPath, phpUnitPath, results)
+		go workers.Run(&wg, testName, phpPath, phpUnitPath, results)
 	}
 
 	wg.Wait()

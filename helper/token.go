@@ -30,7 +30,7 @@ func GetFreeToken() int {
 				return i
 			}
 		}
-		time.Sleep(200)
+		time.Sleep(150)
 
 	}
 
