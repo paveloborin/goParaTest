@@ -1,38 +1,41 @@
 package helper
 
 import (
-	"time"
+	"sync"
+	"log"
 )
 
-var tokens map[int]bool
+var tokens *sync.Map
 
 func InitTokens(numParallelProcess int) {
-	tokens = map[int]bool{}
+	tokens = new(sync.Map)
 	for i := 0; i < numParallelProcess; i++ {
-		tokens[i] = true
+		log.Printf("Init token %v", i)
+		tokens.Store(i, true)
 	}
 }
 
 func setTokenBusy(tokenIndex int) {
-	tokens[tokenIndex] = false
+	tokens.Store(tokenIndex, false)
 }
 
 func SetTokenFree(tokenIndex int) {
-	tokens[tokenIndex] = true
+	tokens.Store(tokenIndex, true)
 }
 
 func GetFreeToken() int {
 
-	for true {
-		for i, tokenAvailable := range tokens {
-			if tokenAvailable {
-				setTokenBusy(i)
-				return i
-			}
+	index := 0
+
+	tokens.Range(func(key interface{}, value interface{}) bool {
+		if (value.(bool) == true) {
+			setTokenBusy(key.(int))
+			index = key.(int)
+
+			return false
 		}
-		time.Sleep(150)
+		return true
+	})
 
-	}
-
-	return 0
+	return index
 }

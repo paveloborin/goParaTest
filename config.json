@@ -1,6 +1,7 @@
 {
-  "phpPath": "php",
-  "phpUnitPath": "/Users/paveloborin/PhpstormProjects/symfony/phpunit-6.3.0.phar",
-  "dir": "./",
-  "processes": 2
+  "phpPath": "",
+  "phpUnitPath": "/Users/p.oborin/PhpstormProjects/libs/libs/phpunit/phpunit/phpunit.php",
+  "phpUnitConfiguration": "/Users/p.oborin/PhpstormProjects/libs/phpunit.ci.xml",
+  "dir": "/Users/p.oborin/PhpstormProjects/libs/src/Billing/Tests/Calculation/Calculate/Commission/",
+  "processes": 10
 }

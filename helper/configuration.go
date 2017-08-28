@@ -11,6 +11,7 @@ type Config struct {
 	PhpUnitPath  string `json:"phpUnitPath"`
 	TestDir      string `json:"dir"`
 	ProcessesNum int `json:"processes"`
+	PhpUnitConfiguration string `json:"phpUnitConfiguration"`
 }
 
 var config Config

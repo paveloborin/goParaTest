@@ -2,30 +2,38 @@ package workers
 
 import (
 	"sync"
-	"log"
 	"github.com/paveloborin/goParaTest/helper"
 	"fmt"
 )
 
-func Run(wg *sync.WaitGroup, testName, phpPath, phpUnitPath string, results *sync.Map) {
+type ResultStruct struct {
+	Result           string
+	TestName         string
+	TokenIndex       int
+	ErrorDescription string
+}
+
+func Run(wg *sync.WaitGroup, testName, phpPath, phpUnitPath, phpUnitConfiguration string, results *sync.Map) {
 	defer wg.Done()
 
 	tokenIndex := helper.GetFreeToken()
-	resultString := runTest(testName, tokenIndex, phpPath, phpUnitPath)
+	resultStruct := runTest(testName, tokenIndex, phpPath, phpUnitPath, phpUnitConfiguration)
 	helper.SetTokenFree(tokenIndex)
 
-	results.Store(testName, resultString)
+	results.Store(testName, resultStruct)
 }
 
-func runTest(testName string, tokenIndex int, phpPath, phpUnitPath string) string {
+func runTest(testName string, tokenIndex int, phpPath, phpUnitPath, phpUnitConfiguration string) ResultStruct {
 
-	log.Printf("running %v %v", testName, tokenIndex)
+	//log.Printf("running %v %v", testName, tokenIndex)
 
-	_, err := helper.ExeCmd(fmt.Sprintf("%v %v", phpPath, phpUnitPath), testName, tokenIndex)
+	_, err := helper.ExeCmd(fmt.Sprintf("%v %v --configuration %v", phpPath, phpUnitPath, phpUnitConfiguration), testName, tokenIndex)
 
-	result := fmt.Sprintf("+ %v", tokenIndex)
+	//result := fmt.Sprintf("+ %v", tokenIndex)
+	result := ResultStruct{Result: "+", TestName: testName, TokenIndex: tokenIndex}
 	if err != nil {
-		result = fmt.Sprintf("- %v Error: %s", tokenIndex, err)
+		result.Result = "-"
+		result.ErrorDescription = fmt.Sprintf("%s", err)
 	}
 
 	return result
