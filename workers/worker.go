@@ -4,6 +4,8 @@ import (
 	"sync"
 	"github.com/paveloborin/goParaTest/helper"
 	"fmt"
+	"time"
+	"math/rand"
 )
 
 type ResultStruct struct {
@@ -16,8 +18,17 @@ type ResultStruct struct {
 func Run(wg *sync.WaitGroup, testName, phpPath, phpUnitPath, phpUnitConfiguration string, results *sync.Map) {
 	defer wg.Done()
 
-	tokenIndex := helper.GetFreeToken()
+	time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
+
+	tokenIndex := -1
+
+	for tokenIndex < 0 {
+		tokenIndex = helper.GetFreeToken()
+		time.Sleep(300)
+	}
+
 	resultStruct := runTest(testName, tokenIndex, phpPath, phpUnitPath, phpUnitConfiguration)
+	time.Sleep(500)
 	helper.SetTokenFree(tokenIndex)
 
 	results.Store(testName, resultStruct)
@@ -35,6 +46,8 @@ func runTest(testName string, tokenIndex int, phpPath, phpUnitPath, phpUnitConfi
 		result.Result = "-"
 		result.ErrorDescription = fmt.Sprintf("%s", err)
 	}
+
+	fmt.Print(result.Result)
 
 	return result
 }

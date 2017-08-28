@@ -25,7 +25,7 @@ func SetTokenFree(tokenIndex int) {
 
 func GetFreeToken() int {
 
-	index := 0
+	index := -1
 
 	tokens.Range(func(key interface{}, value interface{}) bool {
 		if (value.(bool) == true) {
