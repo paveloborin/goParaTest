@@ -4,7 +4,8 @@ import (
 	"flag"
 )
 
-func GetConsoleParams() (int, string, string, string, string) {
+
+func GetConsoleParams() Config {
 	config := LoadConfiguration()
 
 	parProcessesNum := flag.Int("processes", config.ProcessesNum, "number of parallel processes")
@@ -14,5 +15,5 @@ func GetConsoleParams() (int, string, string, string, string) {
 	phpUnitConfiguration := flag.String("phpUnitConfiguration", config.PhpUnitConfiguration, "path to phpUnit config")
 	flag.Parse()
 
-	return *parProcessesNum, *dir, *phpPath, *phpUnitPath, *phpUnitConfiguration
+	return Config{ProcessesNum: *parProcessesNum, TestDir: *dir, PhpPath: *phpPath, PhpUnitPath: *phpUnitPath, PhpUnitConfiguration: *phpUnitConfiguration}
 }

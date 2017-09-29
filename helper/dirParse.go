@@ -9,7 +9,7 @@ import (
 
 var filesAr []string
 
-func DirParse(dirName string) []string {
+func DirParse(done <-chan bool, dirName string) <-chan string {
 	filesAr = []string{}
 	err := filepath.Walk(dirName, visit)
 
@@ -17,7 +17,7 @@ func DirParse(dirName string) []string {
 		fmt.Printf("filepath.Walk() returned %v\n", err)
 	}
 
-	return filesAr
+	return testNameGenerator(done, filesAr...)
 }
 
 func visit(path string, f os.FileInfo, err error) error {
@@ -26,4 +26,21 @@ func visit(path string, f os.FileInfo, err error) error {
 	}
 
 	return nil
+}
+
+func testNameGenerator(done <-chan bool, strings ...string) <-chan string {
+	stringStream := make(chan string)
+
+	go func() {
+		defer close(stringStream)
+		for _, testName := range strings {
+			select {
+			case <-done:
+				return
+			case stringStream <- testName:
+			}
+		}
+	}()
+	return stringStream
+
 }

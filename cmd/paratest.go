@@ -4,32 +4,38 @@ import (
 	"sync"
 	"github.com/paveloborin/goParaTest/helper"
 	"github.com/paveloborin/goParaTest/workers"
-	"github.com/paveloborin/goParaTest/logger"
 	"time"
 	"log"
 )
 
-var results *sync.Map
-
 func main() {
 	var wg sync.WaitGroup
+	done := make(chan bool)
+	defer close(done)
 
-	results = new(sync.Map)
-	numParallelProcess, dir, phpPath, phpUnitPath, phpUnitConfiguration := helper.GetConsoleParams()
-
-	helper.InitTokens(numParallelProcess)
-	testNames := helper.DirParse(dir)
+	config := helper.GetConsoleParams()
+	helper.InitTokens(config.ProcessesNum)
 
 	start := time.Now()
-	wg.Add(len(testNames))
-	for _, testName := range testNames {
-		go workers.Run(&wg, testName, phpPath, phpUnitPath, phpUnitConfiguration, results)
+
+	for result := range workersRun(done, config, &wg) {
+		result.Print()
 	}
 
-	wg.Wait()
+	log.Printf("\nTest execution took %s\n", time.Since(start))
+}
 
-	elapsed := time.Since(start)
-	log.Printf("\nTest execution took %s\n", elapsed)
+func workersRun(done <-chan bool, config helper.Config, wg *sync.WaitGroup) <-chan workers.ResultStruct {
+	results := make(chan workers.ResultStruct)
 
-	logger.PrintResult(results)
+	go func() {
+		defer close(results)
+		for testName := range helper.DirParse(done, config.TestDir) {
+			wg.Add(1)
+			go workers.Run(wg, testName, config.PhpPath, config.PhpUnitPath, config.PhpUnitConfiguration, results, done)
+		}
+		wg.Wait()
+	}()
+
+	return results;
 }
