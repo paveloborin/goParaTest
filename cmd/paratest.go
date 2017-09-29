@@ -14,7 +14,6 @@ func main() {
 	defer close(done)
 
 	config := helper.GetConsoleParams()
-	helper.InitTokens(config.ProcessesNum)
 
 	start := time.Now()
 
@@ -27,12 +26,20 @@ func main() {
 
 func workersRun(done <-chan bool, config helper.Config, wg *sync.WaitGroup) <-chan workers.ResultStruct {
 	results := make(chan workers.ResultStruct)
+	tokens := make(chan int, config.ProcessesNum)
+
+	for i := 0; i < config.ProcessesNum; i++ {
+		tokens <- i + 1
+		log.Printf("Init token %v", i+1)
+	}
 
 	go func() {
 		defer close(results)
+		defer close(tokens)
+
 		for testName := range helper.DirParse(done, config.TestDir) {
 			wg.Add(1)
-			go workers.Run(wg, testName, config.PhpPath, config.PhpUnitPath, config.PhpUnitConfiguration, results, done)
+			go workers.Run(done, wg, testName, config, results, tokens)
 		}
 		wg.Wait()
 	}()

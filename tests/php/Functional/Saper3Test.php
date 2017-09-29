@@ -1,15 +1,11 @@
 <?php
-declare(strict_types=1);
+namespace functional;
 
-use PHPUnit\Framework\TestCase;
-
-/**
- * @covers Email
- */
-final class SuperTest extends TestCase
+class Saper3Test extends FunctionalTestCase
 {
     public function testCanBeCreatedFromValidEmailAddress(): void
     {
+        sleep(4);
         $this->assertTrue(
             true
         );

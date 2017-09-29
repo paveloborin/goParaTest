@@ -1,7 +1,7 @@
 {
-  "phpPath": "",
-  "phpUnitPath": "/Users/p.oborin/PhpstormProjects/libs/libs/phpunit/phpunit/phpunit.php",
-  "phpUnitConfiguration": "/Users/p.oborin/PhpstormProjects/libs/phpunit.ci.xml",
-  "dir": "/Users/p.oborin/PhpstormProjects/libs/src/Billing/Tests/Calculation/Calculate/Commission/",
-  "processes": 10
+  "phpPath": "/usr/local/Cellar/php72/7.2.0beta3_5/bin/php",
+  "phpUnitPath": "/Users/paveloborin/go/src/github.com/paveloborin/goParaTest/tests/php/phpunit-5.7.21.phar",
+  "phpUnitConfiguration": "/Users/paveloborin/go/src/github.com/paveloborin/goParaTest/tests/php/phpunit.xml",
+  "dir": "/Users/paveloborin/go/src/github.com/paveloborin/goParaTest/tests",
+  "processes": 3
 }

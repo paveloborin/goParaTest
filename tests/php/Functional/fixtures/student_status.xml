@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="test">
+	<table_data name="test.student_status">
+	<row>
+		<field name="id">1</field>
+		<field name="student_id">1</field>
+		<field name="status">vacation</field>
+		<field name="datetime">2017-02-04 23:36:32</field>
+	</row>
+	<row>
+		<field name="id">2</field>
+		<field name="student_id">1</field>
+		<field name="status">lost</field>
+		<field name="datetime">2017-02-04 23:56:32</field>
+	</row>
+	<row>
+		<field name="id">3</field>
+		<field name="student_id">2</field>
+		<field name="status">lost</field>
+		<field name="datetime">2017-02-04 22:36:32</field>
+	</row>
+	<row>
+		<field name="id">4</field>
+		<field name="student_id">5</field>
+		<field name="status">lost</field>
+		<field name="datetime">2017-02-04 22:36:32</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

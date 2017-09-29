@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="test">
+	<table_data name="test.student">
+	<row>
+		<field name="id">1</field>
+		<field name="name">sara</field>
+		<field name="surname">jjsd</field>
+		<field name="gender">unknown</field>
+	</row>
+	<row>
+		<field name="id">2</field>
+		<field name="name">mara</field>
+		<field name="surname">dsds</field>
+		<field name="gender">male</field>
+	</row>
+	<row>
+		<field name="id">3</field>
+		<field name="name">dara</field>
+		<field name="surname">oba</field>
+		<field name="gender">unknown</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

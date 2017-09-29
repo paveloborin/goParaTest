@@ -2,10 +2,8 @@ package workers
 
 import (
 	"sync"
-	"github.com/paveloborin/goParaTest/helper"
 	"fmt"
-	"time"
-	"math/rand"
+	"github.com/paveloborin/goParaTest/helper"
 )
 
 type ResultStruct struct {
@@ -23,43 +21,30 @@ func (m ResultStruct) Print() {
 	}
 }
 
-func Run(wg *sync.WaitGroup, testName string, phpPath, phpUnitPath, phpUnitConfiguration string, results chan<- ResultStruct, done <-chan bool) {
+func Run(done <-chan bool, wg *sync.WaitGroup, testName string, config helper.Config, results chan<- ResultStruct, tokens chan int) {
 	defer wg.Done()
 
 	select {
 	case <-done:
 		return
-	default:
-		time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
-
-		//TODO канал?
-		tokenIndex := -1
-		for tokenIndex < 0 {
-			tokenIndex = helper.GetFreeToken()
-			time.Sleep(300)
-		}
-
-		resultStruct := runTest(testName, tokenIndex, phpPath, phpUnitPath, phpUnitConfiguration)
-		time.Sleep(500)
-		helper.SetTokenFree(tokenIndex)
-
-		results <- resultStruct
+	case tokenIndex := <-tokens:
+		results <- runTest(testName, tokenIndex, config)
+		tokens <- tokenIndex
 
 	}
 
 }
 
-func runTest(testName string, tokenIndex int, phpPath, phpUnitPath, phpUnitConfiguration string) ResultStruct {
+func runTest(testName string, tokenIndex int, config helper.Config) ResultStruct {
 
-	//res, err := helper.ExeCmd(fmt.Sprintf("%v %v --configuration %v", phpPath, phpUnitPath, phpUnitConfiguration), testName, tokenIndex)
+	res, err := helper.ExeCmd(fmt.Sprintf("%v %v --configuration %v", config.PhpPath, config.PhpUnitPath, config.PhpUnitConfiguration), testName, tokenIndex)
 
 	result := ResultStruct{Result: "+", TestName: testName, TokenIndex: tokenIndex}
-	//if err != nil {
-	//	result.Result = "-"
-	//	result.ErrorDescription = fmt.Sprintf("%s %s", err, res)
-	//}
-
-	fmt.Print(result.Result)
+	//time.Sleep(10 * time.Millisecond)
+	if err != nil {
+		result.Result = "-"
+		result.ErrorDescription = fmt.Sprintf("%s %s", err, res)
+	}
 
 	return result
 }
