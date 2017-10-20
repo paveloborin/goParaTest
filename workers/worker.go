@@ -40,7 +40,7 @@ func runTest(testName string, tokenIndex int, config helper.Config) ResultStruct
 	res, err := helper.ExeCmd(fmt.Sprintf("%v %v --configuration %v", config.PhpPath, config.PhpUnitPath, config.PhpUnitConfiguration), testName, tokenIndex)
 
 	result := ResultStruct{Result: "+", TestName: testName, TokenIndex: tokenIndex}
-	//time.Sleep(10 * time.Millisecond)
+
 	if err != nil {
 		result.Result = "-"
 		result.ErrorDescription = fmt.Sprintf("%s %s", err, res)

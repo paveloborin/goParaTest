@@ -1,9 +1,9 @@
 <?php
 namespace functional;
 
-class Saper5Test extends FunctionalTestCase
+class Simple5Test extends FunctionalTestCase
 {
-    public function testCanBeCreatedFromValidEmailAddress(): void
+    public function testSomeActivitySimulation(): void
     {
         sleep(7);
         $this->assertTrue(
